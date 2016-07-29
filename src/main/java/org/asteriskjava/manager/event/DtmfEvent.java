@@ -29,7 +29,7 @@ package org.asteriskjava.manager.event;
  * Generally it is safe to just ignore them and only react on <code>AST_FRAME_DTMF_END</code> frames.<br>
  * To check whether an DtmfEvent represents an <code>AST_FRAME_DTMF_BEGIN</code> or
  * <code>AST_FRAME_DTMF_END</code> frame use the {@link #isBegin()} and {@link #isEnd()} methods.
- * <p/>
+ * <br>
  * You can find more information on how Asterisk handles DTMF in the
  * <a href="http://www.voip-info.org/wiki/view/Asterisk+DTMF">DTMF article at voip-info.org</a><p>
  * It is implemented in <code>main/channel.c</code>.<p>
@@ -44,7 +44,7 @@ public class DtmfEvent extends ManagerEvent
     /**
      * Serializable version identifier.
      */
-    static final long serialVersionUID = 0L;
+    static final long serialVersionUID = 1L;
 
     public static final String DIRECTION_RECEIVED = "Received";
     public static final String DIRECTION_SENT = "Sent";
@@ -55,6 +55,10 @@ public class DtmfEvent extends ManagerEvent
     private String direction;
     private Boolean begin;
     private Boolean end;
+    
+    private String language;
+    private String linkedId;
+    private String accountCode;
 
     /**
      * Creates a new DtmfEvent.
@@ -229,4 +233,36 @@ public class DtmfEvent extends ManagerEvent
     {
         return direction != null && DIRECTION_SENT.equalsIgnoreCase(direction);
     }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
+    }
+    
+    
 }

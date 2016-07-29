@@ -16,9 +16,9 @@
  */
 package org.asteriskjava.util;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -49,16 +49,24 @@ public class ReflectionUtil
      */
     public static Map<String, Method> getGetters(final Class<?> clazz)
     {
-        final Map<String, Method> accessors = new HashMap<String, Method>();
+        final Map<String, Method> accessors = new HashMap<>();
         final Method[] methods = clazz.getMethods();
 
         for (Method method : methods)
         {
-            String name;
-            String methodName;
-
-            methodName = method.getName();
-            if (!methodName.startsWith("get"))
+            String name = null;
+            String methodName = method.getName();
+            
+            if (methodName.startsWith("get"))
+            {
+                name = methodName.substring(3);
+            }
+            else if (methodName.startsWith("is"))
+            {
+                name = methodName.substring(2);
+            }
+            
+            if (name == null || name.length() == 0)
             {
                 continue;
             }
@@ -69,15 +77,7 @@ public class ReflectionUtil
                 continue;
             }
 
-            // ok seems to be an accessor
-            name = methodName.substring("get".length()).toLowerCase(Locale.ENGLISH);
-
-            if (name.length() == 0)
-            {
-                continue;
-            }
-
-            accessors.put(name, method);
+            accessors.put(name.toLowerCase(Locale.ENGLISH), method);
         }
 
         return accessors;
@@ -95,7 +95,7 @@ public class ReflectionUtil
      */
     public static Map<String, Method> getSetters(Class<?> clazz)
     {
-        final Map<String, Method> accessors = new HashMap<String, Method>();
+        final Map<String, Method> accessors = new HashMap<>();
         final Method[] methods = clazz.getMethods();
 
         for (Method method : methods)
@@ -135,7 +135,7 @@ public class ReflectionUtil
     {
         char c;
         boolean needsStrip = false;
-        StringBuffer sb;
+        StringBuilder sb;
 
         if (s == null)
         {
@@ -165,7 +165,7 @@ public class ReflectionUtil
             return s;
         }
 
-        sb = new StringBuffer(s.length());
+        sb = new StringBuilder(s.length());
         for (int i = 0; i < s.length(); i++)
         {
             c = s.charAt(i);

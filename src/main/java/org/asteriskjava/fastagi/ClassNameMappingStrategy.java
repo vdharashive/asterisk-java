@@ -26,7 +26,7 @@ import java.util.Map;
  * {@link org.asteriskjava.fastagi.AgiScript} in
  * your dialplan should look like this:
  * <pre>
- * exten => 123,1,AGI(agi://your.server.com/com.example.agi.MyScript)
+ * exten =&gt; 123,1,AGI(agi://your.server.com/com.example.agi.MyScript)
  * </pre>
  * Where com.example.agi.MyScript is the fully qualified name of your
  * AgiScript.
@@ -59,7 +59,7 @@ public class ClassNameMappingStrategy extends AbstractMappingStrategy
     public ClassNameMappingStrategy(boolean shareInstances)
     {
         super();
-        this.instances = new HashMap<String, AgiScript>();
+        this.instances = new HashMap<>();
         this.shareInstances = shareInstances;
     }
 

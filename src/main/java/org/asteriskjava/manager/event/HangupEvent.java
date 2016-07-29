@@ -23,7 +23,7 @@ package org.asteriskjava.manager.event;
  * @author srt
  * @version $Id$
  */
-public class HangupEvent extends AbstractChannelEvent
+public class HangupEvent extends AbstractChannelStateEvent
 {
     /**
      * Serializable version identifier.
@@ -32,12 +32,27 @@ public class HangupEvent extends AbstractChannelEvent
 
     private Integer cause;
     private String causeTxt;
+    private String language;
+    private String linkedId;
+    private String connectedlinenum;
 
+    private String accountCode;
+    
     public HangupEvent(Object source)
     {
         super(source);
     }
 
+    public String getLanguage()
+    {
+    	return language;
+    }
+    
+    public void setLanguage(String language)
+    {
+    	this.language = language;
+    }       
+    
     /**
      * Returns the cause of the hangup.
      *
@@ -80,4 +95,52 @@ public class HangupEvent extends AbstractChannelEvent
     {
         this.causeTxt = causeTxt;
     }
+
+	public String getAccountCode() 
+	{
+		return accountCode;
+	}
+
+	public void setAccountCode(String accountCode) 
+	{
+		this.accountCode = accountCode;
+	}
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("HangupEvent [cause=");
+        builder.append(cause);
+        builder.append(", causeTxt=");
+        builder.append(causeTxt);
+        builder.append(", language=");
+        builder.append(language);
+        builder.append(", linkedId=");
+        builder.append(linkedId);
+        builder.append(", accountCode=");
+        builder.append(accountCode);
+        builder.append("]");
+        return builder.toString();
+    }
+
+	public String getConnectedlinenum()
+	{
+		return connectedlinenum;
+	}
+
+	public void setConnectedlinenum(String connectedlinenum)
+	{
+		this.connectedlinenum = connectedlinenum;
+	}
 }

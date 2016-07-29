@@ -16,30 +16,36 @@
  */
 package org.asteriskjava.fastagi.internal;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.net.InetAddress;
 
-import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
-
 import org.asteriskjava.fastagi.AgiHangupException;
+import org.asteriskjava.fastagi.AgiReader;
 import org.asteriskjava.fastagi.AgiRequest;
-import org.asteriskjava.fastagi.internal.FastAgiReader;
 import org.asteriskjava.fastagi.reply.AgiReply;
 import org.asteriskjava.util.SocketConnectionFacade;
+import org.junit.Before;
+import org.junit.Test;
 
-public class AgiReaderImplTest extends TestCase
+public class AgiReaderImplTest
 {
     private AgiReader agiReader;
     private SocketConnectionFacade socket;
 
-    @Override
-   protected void setUp() throws Exception
+    @Before
+    public void setUp()
     {
-        super.setUp();
         this.socket = createMock(SocketConnectionFacade.class);
         this.agiReader = new FastAgiReader(socket);
     }
 
+    @Test
     public void testReadRequest() throws Exception
     {
         AgiRequest request;
@@ -87,6 +93,7 @@ public class AgiReaderImplTest extends TestCase
         verify(socket);
     }
 
+    @Test
     public void testReadReply() throws Exception
     {
         AgiReply reply;
@@ -103,6 +110,7 @@ public class AgiReaderImplTest extends TestCase
         verify(socket);
     }
 
+    @Test
     public void testReadReplyInvalidOrUnknownCommand() throws Exception
     {
         AgiReply reply;
@@ -118,6 +126,7 @@ public class AgiReaderImplTest extends TestCase
         verify(socket);
     }
 
+    @Test
     public void testReadReplyInvalidCommandSyntax() throws Exception
     {
         AgiReply reply;
@@ -139,6 +148,7 @@ public class AgiReaderImplTest extends TestCase
         verify(socket);
     }
 
+    @Test
     public void testReadReplyWhenHungUp() throws Exception
     {
         expect(socket.readLine()).andReturn(null);

@@ -16,11 +16,15 @@
  */
 package org.asteriskjava.fastagi.internal;
 
-import java.util.*;
-import java.util.regex.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.asteriskjava.fastagi.reply.AgiReply;
-
 
 /**
  * Default implementation of the AgiReply interface.
@@ -88,7 +92,7 @@ public class AgiReplyImpl implements AgiReply
         this();
         if (lines != null)
         {
-            this.lines = new ArrayList<String>(lines);
+            this.lines = new ArrayList<>(lines);
             if (!lines.isEmpty())
             {
                 firstLine = lines.get(0);
@@ -163,6 +167,11 @@ public class AgiReplyImpl implements AgiReply
             return status;
         }
 
+        if (firstLine == null)
+        {
+            return -1;
+        }
+
         final Matcher matcher = STATUS_PATTERN.matcher(firstLine);
         if (matcher.find())
         {
@@ -194,7 +203,7 @@ public class AgiReplyImpl implements AgiReply
             return attributes;
         }
 
-        attributes = new HashMap<String, String>();
+        attributes = new HashMap<>();
 
         final Matcher matcher = ADDITIONAL_ATTRIBUTES_PATTERN.matcher(firstLine);
         if (matcher.find())
@@ -208,7 +217,7 @@ public class AgiReplyImpl implements AgiReply
     {
         StringBuilder keyBuilder = new StringBuilder();
         StringBuilder valueBuilder = new StringBuilder();
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
         boolean inKey = true;
         boolean inQuotes = false;
@@ -221,7 +230,7 @@ public class AgiReplyImpl implements AgiReply
                 inKey = false;
                 inQuotes = false;
             }
-            else if ((c == ' ' && !inKey && !inQuotes))
+            else if (c == ' ' && !inKey && !inQuotes)
             {
                 map.put(keyBuilder.toString().toLowerCase(Locale.ENGLISH), valueBuilder.toString());
                 keyBuilder.delete(0, keyBuilder.length());
@@ -311,8 +320,8 @@ public class AgiReplyImpl implements AgiReply
      * Returns the usage of the command sent if Asterisk expected a different
      * syntax (getStatus() == SC_INVALID_COMMAND_SYNTAX).
      *
-     * @return the usage of the command sent, <code>null</code> if there were
-     *         no syntax errors.
+     * @return the usage of the command sent, <code>null</code> if there were no
+     *         syntax errors.
      */
     public String getUsage()
     {

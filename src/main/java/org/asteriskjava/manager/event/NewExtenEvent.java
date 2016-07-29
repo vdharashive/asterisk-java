@@ -17,7 +17,8 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A NewExtenEvent is triggered when a channel is connected to a new extension.<p>
+ * A NewExtenEvent is triggered when a channel is connected to a new extension.
+ * <p>
  * It is implemented in <code>pbx.c</code>
  * 
  * @author srt
@@ -31,12 +32,13 @@ public class NewExtenEvent extends ManagerEvent
     static final long serialVersionUID = -467486409866099387L;
 
     private String uniqueId;
-    private String context;
     private String extension;
     private String application;
     private String appData;
-    private Integer priority;
     private String channel;
+    private String language;
+    private String accountCode;
+    private String linkedId;
 
     /**
      * @param source
@@ -44,6 +46,16 @@ public class NewExtenEvent extends ManagerEvent
     public NewExtenEvent(Object source)
     {
         super(source);
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
     }
 
     /**
@@ -79,8 +91,8 @@ public class NewExtenEvent extends ManagerEvent
     }
 
     /**
-     * Returns the parameters passed to the application that is executed. The parameters are
-     * separated by a '|' character.
+     * Returns the parameters passed to the application that is executed. The
+     * parameters are separated by a '|' character.
      */
     public String getAppData()
     {
@@ -112,22 +124,6 @@ public class NewExtenEvent extends ManagerEvent
     }
 
     /**
-     * Returns the name of the context of the connected extension.
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    /**
-     * Sets the name of the context of the connected extension.
-     */
-    public void setContext(String context)
-    {
-        this.context = context;
-    }
-
-    /**
      * Returns the extension.
      */
     public String getExtension()
@@ -143,19 +139,24 @@ public class NewExtenEvent extends ManagerEvent
         this.extension = extension;
     }
 
-    /**
-     * Returns the priority.
-     */
-    public Integer getPriority()
+    public String getAccountCode()
     {
-        return priority;
+        return accountCode;
     }
 
-    /**
-     * Sets the priority.
-     */
-    public void setPriority(Integer priority)
+    public void setAccountCode(String accountCode)
     {
-        this.priority = priority;
+        this.accountCode = accountCode;
     }
+
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+    
 }

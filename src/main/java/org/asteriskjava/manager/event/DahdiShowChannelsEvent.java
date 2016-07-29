@@ -34,7 +34,6 @@ public class DahdiShowChannelsEvent extends ResponseEvent
     private Integer Dahdichannel;
     private String signalling;
     private String signallingcode;
-    private String context;
     private Boolean dnd;
     private String alarm;
     private String uniqueid;
@@ -97,9 +96,9 @@ public class DahdiShowChannelsEvent extends ResponseEvent
      * Returns the signalling of this Dahdi channel.<p>
      * Possible values are:
      * <ul>
-     * <li>E & M Immediate</li>
-     * <li>E & M Wink</li>
-     * <li>E & M E1</li>
+     * <li>E &amp; M Immediate</li>
+     * <li>E &amp; M Wink</li>
+     * <li>E &amp; M E1</li>
      * <li>Feature Group D (DTMF)</li>
      * <li>Feature Group D (MF)</li>
      * <li>Feature Group B (MF)</li>
@@ -133,24 +132,6 @@ public class DahdiShowChannelsEvent extends ResponseEvent
     public void setSignalling(String signalling)
     {
         this.signalling = signalling;
-    }
-
-
-
-    /**
-     * Returns the context of this Dahdi channel as defined in <code>chan_Dahdi.conf</code>.
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    /**
-     * Sets the context of this Dahdi channel.
-     */
-    public void setContext(String context)
-    {
-        this.context = context;
     }
 
     /**

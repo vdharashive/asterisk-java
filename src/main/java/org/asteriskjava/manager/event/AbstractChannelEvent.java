@@ -29,25 +29,17 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      */
     static final long serialVersionUID = 5906599407896179295L;
 
+    private String accountCode;
+
     /**
      * The name of the channel.
      */
     private String channel;
 
     /**
-     * This Caller*ID Number of the channel.
-     */
-    private String callerIdNum;
-
-    /**
-     * The Caller*ID Name of the channel.
-     */
-    private String callerIdName;
-
-    /**
      * The unique id of the channel.
      */
-    private String uniqueId;
+    protected String uniqueId;
 
     protected AbstractChannelEvent(Object source)
     {
@@ -85,15 +77,17 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID of the channel if set or <code>null</code> if none has been set.
+     * Returns the Caller*ID of the channel if set or <code>null</code> if none
+     * has been set.
      *
      * @return the Caller*ID
      * @deprecated
      * @see #getCallerIdNum()
      */
-    @Deprecated public final String getCallerId()
+    @Deprecated
+    public final String getCallerId()
     {
-        return callerIdNum;
+        return getCallerIdNum();
     }
 
     /**
@@ -102,13 +96,15 @@ public abstract class AbstractChannelEvent extends ManagerEvent
      * @param callerId the Caller*ID of the channel.
      * @deprecated
      */
-    @Deprecated public final void setCallerId(String callerId)
+    @Deprecated
+    public final void setCallerId(String callerId)
     {
-        this.callerIdNum = callerId;
+        setCallerIdNum(callerId);
     }
 
     /**
-     * Returns the Caller*ID number of the channel if set or <code>null</code> if none has been set.
+     * Returns the Caller*ID number of the channel if set or <code>null</code>
+     * if none has been set.
      *
      * @return the Caller*ID number
      * @since 0.3
@@ -124,7 +120,8 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     }
 
     /**
-     * Returns the Caller*ID Name of the channel if set or <code>null</code> if none has been set.
+     * Returns the Caller*ID Name of the channel if set or <code>null</code> if
+     * none has been set.
      * 
      * @return the Caller*ID Name of the channel.
      */
@@ -136,5 +133,15 @@ public abstract class AbstractChannelEvent extends ManagerEvent
     public final void setCallerIdName(String callerIdName)
     {
         this.callerIdName = callerIdName;
+    }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
     }
 }

@@ -1,24 +1,29 @@
 package org.asteriskjava.manager.event;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
 
-public class SkypeBuddyStatusEventTest extends TestCase
+import org.junit.Before;
+import org.junit.Test;
+
+public class SkypeBuddyStatusEventTest
 {
     private SkypeBuddyStatusEvent event;
 
-    @Override
+    @Before
     public void setUp()
     {
         event = new SkypeBuddyStatusEvent(this);
         event.setBuddy("Skype/user@the.buddy");
     }
 
-    public void testGetUser() throws Exception
+    @Test
+    public void testGetUser()
     {
         assertEquals("user", event.getUser());
     }
 
-    public void testGetBuddySkypename() throws Exception
+    @Test
+    public void testGetBuddySkypename()
     {
         assertEquals("the.buddy", event.getBuddySkypename());
     }

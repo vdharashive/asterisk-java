@@ -2,9 +2,9 @@ package org.asteriskjava.fastagi.command;
 
 /**
  * Calls a subroutine from dialplan.
- * <p/>
+ * <br>
  * Example return code: 200 result=0 Gosub complete
- * <p/>
+ * <br>
  * This command is available since Asterisk 1.6.
  *
  * @author fadishei
@@ -33,7 +33,7 @@ public class GosubCommand extends AbstractAgiCommand
      * an optional list of arguments to be passed to the subroutine.
      * They will accessible in the form of ${ARG1}, ${ARG2}, etc in the subroutine body.
      */
-    private String arguments[];
+    private String[] arguments;
 
     /**
      * Creates a new GosubCommand.

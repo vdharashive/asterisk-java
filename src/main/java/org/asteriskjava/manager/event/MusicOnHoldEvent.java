@@ -17,24 +17,30 @@
 package org.asteriskjava.manager.event;
 
 /**
- * A MusicOnHoldEvent is triggered when music on hold starts or stops on a channel.<p>
- * It is implemented in <code>res/res_musiconhold.c</code>.<p>
+ * A MusicOnHoldEvent is triggered when music on hold starts or stops on a
+ * channel.
+ * <p>
+ * It is implemented in <code>res/res_musiconhold.c</code>.
+ * <p>
  * Available since Asterisk 1.6
  *
  * @author srt
- * @version $Id$
  * @since 1.0.0
  */
 public class MusicOnHoldEvent extends ManagerEvent
 {
-    private static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 1L;
 
     public static final String STATE_START = "Start";
     public static final String STATE_STOP = "Stop";
 
     private String channel;
+    private String className;
     private String uniqueId;
     private String state;
+    private String accountCode;
+    private String linkedId;
+    private String language;
 
     public MusicOnHoldEvent(Object source)
     {
@@ -61,6 +67,16 @@ public class MusicOnHoldEvent extends ManagerEvent
         this.channel = channel;
     }
 
+    public String getClassName()
+    {
+        return this.className;
+    }
+
+    public void setClazz(String className)
+    {
+        this.className = className;
+    }
+
     /**
      * Returns the unique id of the channel.
      *
@@ -82,10 +98,11 @@ public class MusicOnHoldEvent extends ManagerEvent
     }
 
     /**
-     * Returns the state. This is either "Start" or "Stop" depending on whether music on hold
-     * started or stopped on the channel.
+     * Returns the state. This is either "Start" or "Stop" depending on whether
+     * music on hold started or stopped on the channel.
      *
-     * @return "Start" if music on hold started or "Stop" if music on hold stopped on the channel.
+     * @return "Start" if music on hold started or "Stop" if music on hold
+     *         stopped on the channel.
      * @see #STATE_START
      * @see #STATE_STOP
      * @see #isStart()
@@ -104,7 +121,8 @@ public class MusicOnHoldEvent extends ManagerEvent
     /**
      * Returns whether this is a start event.
      *
-     * @return <code>true</code> if this a start event, <code>false</code> otherwise.
+     * @return <code>true</code> if this a start event, <code>false</code>
+     *         otherwise.
      */
     public boolean isStart()
     {
@@ -114,10 +132,42 @@ public class MusicOnHoldEvent extends ManagerEvent
     /**
      * Returns whether this is a stop event.
      *
-     * @return <code>true</code> if this an stop event, <code>false</code> otherwise.
+     * @return <code>true</code> if this an stop event, <code>false</code>
+     *         otherwise.
      */
     public boolean isStop()
     {
         return STATE_STOP.equals(state);
     }
+
+    public String getAccountCode()
+    {
+        return accountCode;
+    }
+
+    public void setAccountCode(String accountCode)
+    {
+        this.accountCode = accountCode;
+    }
+    
+    public String getLinkedId()
+    {
+        return linkedId;
+    }
+
+    public void setLinkedId(String linkedId)
+    {
+        this.linkedId = linkedId;
+    }
+
+    public String getLanguage()
+    {
+        return language;
+    }
+
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
+    
 }

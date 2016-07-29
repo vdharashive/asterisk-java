@@ -16,10 +16,14 @@
  */
 package org.asteriskjava.manager.action;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.asteriskjava.manager.event.OriginateResponseEvent;
 import org.asteriskjava.manager.event.ResponseEvent;
-
-import java.util.*;
 
 
 /**
@@ -136,7 +140,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * In essence, it says, 'Is the person who has been called allowed to see the callers number?'
      * (presentation) and 'What authority was used to verify that this is a genuine number?'
      * (screening).<p>
-     * <p/>
+     * <br>
      * Presentation indicator (Bits 6 and 7):
      * <pre>
      * Bits Meaning
@@ -288,7 +292,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
      * If not set, Asterisk assumes a default value of 30000 meaning 30 seconds.
      *
      * @param timeout the timeout in milliseconds
-     * @deprecated use {@see #setTimeout(Long)} instead.
+     * @deprecated use {@link #setTimeout(Long)} instead.
      */
     @Deprecated public void setTimeout(Integer timeout)
     {
@@ -328,7 +332,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         }
 
         st = new StringTokenizer(variable, "|");
-        variables = new LinkedHashMap<String, String>();
+        variables = new LinkedHashMap<>();
         while (st.hasMoreTokens())
         {
             String[] keyValue;
@@ -356,7 +360,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
     {
         if (variables == null)
         {
-            variables = new LinkedHashMap<String, String>();
+            variables = new LinkedHashMap<>();
         }
 
         variables.put(name, value);
@@ -442,7 +446,7 @@ public class OriginateAction extends AbstractManagerAction implements EventGener
         }
 
         Iterator<String> iter = codecs.iterator();
-        StringBuffer buffer = new StringBuffer(iter.next());
+        StringBuilder buffer = new StringBuilder(iter.next());
         while (iter.hasNext())
         {
             buffer.append(",").append(iter.next());

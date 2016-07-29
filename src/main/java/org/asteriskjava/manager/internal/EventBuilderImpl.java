@@ -16,11 +16,18 @@
  */
 package org.asteriskjava.manager.internal;
 
-import org.asteriskjava.manager.event.*;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+import org.asteriskjava.manager.event.*;
 
 /**
  * Default implementation of the EventBuilder interface.
@@ -31,12 +38,12 @@ import java.util.*;
  */
 class EventBuilderImpl extends AbstractBuilder implements EventBuilder
 {
-    private static final Set<String> ignoredAttributes = new HashSet<String>(Arrays.asList("event"));
-    private Map<String, Class<?>> registeredEventClasses;
+    private static final Set<String> ignoredAttributes = new HashSet<>(Arrays.asList("event"));
+    private Map<String, Class< ? >> registeredEventClasses;
 
     EventBuilderImpl()
     {
-        this.registeredEventClasses = new HashMap<String, Class<?>>();
+        this.registeredEventClasses = new HashMap<>();
         registerBuiltinEventClasses();
     }
 
@@ -55,15 +62,32 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(AgentRingNoAnswerEvent.class);
         registerEventClass(AgentsEvent.class);
         registerEventClass(AgentsCompleteEvent.class);
+        registerEventClass(AgiExecEndEvent.class);
         registerEventClass(AgiExecEvent.class);
+        registerEventClass(AgiExecStartEvent.class);
+        registerEventClass(AntennaLevelEvent.class);
         registerEventClass(AsyncAgiEvent.class);
+        registerEventClass(AsyncAgiEndEvent.class);
+        registerEventClass(AsyncAgiExecEvent.class);
+        registerEventClass(AsyncAgiStartEvent.class);
         registerEventClass(AlarmEvent.class);
         registerEventClass(AlarmClearEvent.class);
+        registerEventClass(BridgeCreateEvent.class);
+        registerEventClass(BridgeDestroyEvent.class);
+        registerEventClass(BridgeEnterEvent.class);
         registerEventClass(BridgeEvent.class);
         registerEventClass(BridgeExecEvent.class);
+        registerEventClass(BridgeLeaveEvent.class);
+        registerEventClass(BridgeMergeEvent.class);
+        registerEventClass(BlindTransferEvent.class);
+        registerEventClass(AttendedTransferEvent.class);
         registerEventClass(CdrEvent.class);
+        registerEventClass(CelEvent.class);
+        registerEventClass(ChallengeSentEvent.class);
         registerEventClass(ChannelReloadEvent.class);
         registerEventClass(ChannelUpdateEvent.class);
+        registerEventClass(ChanSpyStartEvent.class);
+        registerEventClass(ChanSpyStopEvent.class);
         registerEventClass(ConfbridgeEndEvent.class);
         registerEventClass(ConfbridgeJoinEvent.class);
         registerEventClass(ConfbridgeLeaveEvent.class);
@@ -75,11 +99,25 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(ConfbridgeTalkingEvent.class);
         registerEventClass(CoreShowChannelEvent.class);
         registerEventClass(CoreShowChannelsCompleteEvent.class);
-		registerEventClass(DahdiShowChannelsEvent.class);
+        registerEventClass(DAHDIChannelEvent.class);
+        registerEventClass(DahdiShowChannelsEvent.class);
         registerEventClass(DahdiShowChannelsCompleteEvent.class);
         registerEventClass(DbGetResponseEvent.class);
+        registerEventClass(DeviceStateChangeEvent.class);
+        registerEventClass(DialBeginEvent.class);
+        registerEventClass(DialEndEvent.class);
         registerEventClass(DialEvent.class);
         registerEventClass(DndStateEvent.class);
+        registerEventClass(DongleNewSMSBase64Event.class);
+        registerEventClass(DongleCENDEvent.class);
+        registerEventClass(DongleCallStateChangeEvent.class);
+        registerEventClass(DongleNewSMSEvent.class);
+        registerEventClass(DongleNewCMGREvent.class);
+        registerEventClass(DongleStatusEvent.class);
+        registerEventClass(DongleDeviceEntryEvent.class);
+        registerEventClass(DongleShowDevicesCompleteEvent.class);
+        registerEventClass(DtmfBeginEvent.class);
+        registerEventClass(DtmfEndEvent.class);
         registerEventClass(DtmfEvent.class);
         registerEventClass(ExtensionStatusEvent.class);
         registerEventClass(FaxDocumentStatusEvent.class);
@@ -87,15 +125,19 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(FaxStatusEvent.class);
         registerEventClass(FullyBootedEvent.class);
         registerEventClass(HangupEvent.class);
+        registerEventClass(HangupRequestEvent.class);
         registerEventClass(HoldedCallEvent.class);
         registerEventClass(HoldEvent.class);
+        registerEventClass(InvalidPasswordEvent.class);
         registerEventClass(JabberEventEvent.class);
         registerEventClass(JitterBufStatsEvent.class);
         registerEventClass(JoinEvent.class);
         registerEventClass(LeaveEvent.class);
         registerEventClass(LinkEvent.class);
         registerEventClass(ListDialplanEvent.class);
+        registerEventClass(LocalBridgeEvent.class);
         registerEventClass(LogChannelEvent.class);
+        registerEventClass(NewConnectedLineEvent.class);
         registerEventClass(MasqueradeEvent.class);
         registerEventClass(MeetMeEndEvent.class);
         registerEventClass(MeetMeJoinEvent.class);
@@ -109,6 +151,8 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(MonitorStartEvent.class);
         registerEventClass(MonitorStopEvent.class);
         registerEventClass(MusicOnHoldEvent.class);
+        registerEventClass(MusicOnHoldStartEvent.class);
+        registerEventClass(MusicOnHoldStopEvent.class);
         registerEventClass(NewAccountCodeEvent.class);
         registerEventClass(NewCallerIdEvent.class);
         registerEventClass(NewChannelEvent.class);
@@ -121,15 +165,21 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(ParkedCallEvent.class);
         registerEventClass(ParkedCallTimeOutEvent.class);
         registerEventClass(ParkedCallsCompleteEvent.class);
+        registerEventClass(PausedEvent.class);
         registerEventClass(PeerEntryEvent.class);
         registerEventClass(PeerlistCompleteEvent.class);
+        registerEventClass(PeersEvent.class);
         registerEventClass(PeerStatusEvent.class);
+        registerEventClass(PickupEvent.class);
         registerEventClass(PriEventEvent.class);
         registerEventClass(QueueCallerAbandonEvent.class);
+        registerEventClass(QueueCallerJoinEvent.class);
+        registerEventClass(QueueCallerLeaveEvent.class);
         registerEventClass(QueueEntryEvent.class);
         registerEventClass(QueueMemberAddedEvent.class);
         registerEventClass(QueueMemberEvent.class);
         registerEventClass(QueueMemberPausedEvent.class);
+        registerEventClass(QueueMemberPauseEvent.class);
         registerEventClass(QueueMemberPenaltyEvent.class);
         registerEventClass(QueueMemberRemovedEvent.class);
         registerEventClass(QueueMemberStatusEvent.class);
@@ -158,11 +208,14 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(SkypeLicenseListCompleteEvent.class);
         registerEventClass(ShowDialplanCompleteEvent.class);
         registerEventClass(ShutdownEvent.class);
+        registerEventClass(SoftHangupRequestEvent.class);
         registerEventClass(StatusEvent.class);
         registerEventClass(StatusCompleteEvent.class);
+        registerEventClass(SuccessfulAuthEvent.class);
         registerEventClass(T38FaxStatusEvent.class);
         registerEventClass(TransferEvent.class);
         registerEventClass(UnholdEvent.class);
+        registerEventClass(UnpausedEvent.class);
         registerEventClass(UnlinkEvent.class);
         registerEventClass(UnparkedCallEvent.class);
         registerEventClass(VarSetEvent.class);
@@ -170,10 +223,9 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         registerEventClass(VoicemailUserEntryEvent.class);
         registerEventClass(ZapShowChannelsEvent.class);
         registerEventClass(ZapShowChannelsCompleteEvent.class);
-
     }
 
-    public final void registerEventClass(Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
+    public final void registerEventClass(Class< ? extends ManagerEvent> clazz) throws IllegalArgumentException
     {
         String className;
         String eventType;
@@ -198,14 +250,15 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
      * Registers a new event class for the event given by eventType.
      *
      * @param eventType the name of the event to register the class for. For
-     *                  example "Join".
-     * @param clazz     the event class to register, must extend
-     *                  {@link ManagerEvent}.
+     *            example "Join".
+     * @param clazz the event class to register, must extend
+     *            {@link ManagerEvent}.
      * @throws IllegalArgumentException if clazz is not a valid event class.
      */
-    public final void registerEventClass(String eventType, Class<? extends ManagerEvent> clazz) throws IllegalArgumentException
+    public final void registerEventClass(String eventType, Class< ? extends ManagerEvent> clazz)
+            throws IllegalArgumentException
     {
-        Constructor<?> defaultConstructor;
+        Constructor< ? > defaultConstructor;
 
         if (!ManagerEvent.class.isAssignableFrom(clazz))
         {
@@ -236,52 +289,101 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
         logger.debug("Registered event type '" + eventType + "' (" + clazz + ")");
     }
 
+    @SuppressWarnings("unchecked")
     public ManagerEvent buildEvent(Object source, Map<String, Object> attributes)
     {
         ManagerEvent event;
-        String eventType;
-        Class<?> eventClass;
-        Constructor<?> constructor;
+        String eventType = null;
+        Class< ? > eventClass;
+        Constructor< ? > constructor;
 
         if (attributes.get("event") == null)
         {
             logger.error("No event type in properties");
             return null;
         }
-        if (!(attributes.get("event") instanceof String))
+
+        if (attributes.get("event") instanceof List)
         {
-            logger.error("Event type is not a String");
-            return null;
+            List< ? > eventNames = (List< ? >) attributes.get("event");
+            if (!eventNames.isEmpty() && "PeerEntry".equals(eventNames.get(0)))
+            {
+                // List of PeerEntry events was received (AJ-329)
+                // Convert map of lists to list of maps - one map for each
+                // PeerEntry event
+                int peersAmount = attributes.get("listitems") != null
+                        ? Integer.parseInt((String) attributes.get("listitems"))
+                        : eventNames.size() - 1; // Last event is
+                                                 // PeerlistComplete
+                List<Map<String, Object>> peersAttributes = new ArrayList<>();
+                for (Map.Entry<String, Object> attribute : attributes.entrySet())
+                {
+                    String key = attribute.getKey();
+                    Object value = attribute.getValue();
+                    for (int i = 0; i < peersAmount; i++)
+                    {
+                        Map<String, Object> peerAttrs;
+                        if (peersAttributes.size() > i)
+                        {
+                            peerAttrs = peersAttributes.get(i);
+                        }
+                        else
+                        {
+                            peerAttrs = new HashMap<>();
+                            peersAttributes.add(i, peerAttrs);
+                        }
+                        if (value instanceof List)
+                        {
+                            peerAttrs.put(key, ((List< ? >) value).get(i));
+                        }
+                        else if (value instanceof String && !"listitems".equals(key))
+                        {
+                            peerAttrs.put(key, value);
+                        }
+                    }
+                }
+                attributes.put("peersAttributes", peersAttributes);
+                eventType = "peers";
+            }
         }
-
-        eventType = ((String) attributes.get("event")).toLowerCase(Locale.US);
-
-        // Change in Asterisk 1.4 where the name of the UserEvent is sent as property instead
-        // of the event name (AJ-48)
-        if ("userevent".equals(eventType))
+        else
         {
-            String userEventType;
-
-            if (attributes.get("userevent") == null)
+            if (!(attributes.get("event") instanceof String))
             {
-                logger.error("No user event type in properties");
-                return null;
-            }
-            if (!(attributes.get("userevent") instanceof String))
-            {
-                logger.error("User event type is not a String");
+                logger.error("Event type is not a String or List");
                 return null;
             }
 
-            userEventType = ((String) attributes.get("userevent")).toLowerCase(Locale.US);
-            eventType = eventType + userEventType;
+            eventType = ((String) attributes.get("event")).toLowerCase(Locale.US);
+
+            // Change in Asterisk 1.4 where the name of the UserEvent is sent as
+            // property instead
+            // of the event name (AJ-48)
+            if ("userevent".equals(eventType))
+            {
+                String userEventType;
+
+                if (attributes.get("userevent") == null)
+                {
+                    logger.error("No user event type in properties");
+                    return null;
+                }
+                if (!(attributes.get("userevent") instanceof String))
+                {
+                    logger.error("User event type is not a String");
+                    return null;
+                }
+
+                userEventType = ((String) attributes.get("userevent")).toLowerCase(Locale.US);
+                eventType = eventType + userEventType;
+            }
         }
 
         eventClass = registeredEventClasses.get(eventType);
         if (eventClass == null)
         {
             logger.info("No event class registered for event type '" + eventType + "', attributes: " + attributes
-                    + ". Please report at http://jira.reucon.org/browse/AJ");
+                    + ". Please report at https://github.com/asterisk-java/asterisk-java/issues");
             return null;
         }
 
@@ -305,7 +407,30 @@ class EventBuilderImpl extends AbstractBuilder implements EventBuilder
             return null;
         }
 
-        setAttributes(event, attributes, ignoredAttributes);
+        if (attributes.get("peersAttributes") != null && attributes.get("peersAttributes") instanceof List)
+        {
+            // Fill Peers event with list of PeerEntry events (AJ-329)
+            PeersEvent peersEvent = (PeersEvent) event;
+            // TODO: This cast is very ugly, we should review how attributes are
+            // being passed around.
+            for (Map<String, Object> peerAttrs : (List<Map<String, Object>>) attributes.get("peersAttributes"))
+            {
+                PeerEntryEvent peerEntryEvent = new PeerEntryEvent(source);
+                setAttributes(peerEntryEvent, peerAttrs, ignoredAttributes);
+                List<PeerEntryEvent> peerEntryEvents = peersEvent.getChildEvents();
+                if (peerEntryEvents == null)
+                {
+                    peerEntryEvents = new ArrayList<>();
+                    peersEvent.setChildEvents(peerEntryEvents);
+                }
+                peerEntryEvents.add(peerEntryEvent);
+            }
+            peersEvent.setActionId(peersEvent.getChildEvents().get(0).getActionId());
+        }
+        else
+        {
+            setAttributes(event, attributes, ignoredAttributes);
+        }
 
         // ResponseEvents are sent in response to a ManagerAction if the
         // response contains lots of data. They include the actionId of

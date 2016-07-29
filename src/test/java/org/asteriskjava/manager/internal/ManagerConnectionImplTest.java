@@ -20,12 +20,14 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.asteriskjava.AsteriskVersion;
 import org.asteriskjava.manager.AuthenticationFailedException;
@@ -41,16 +43,18 @@ import org.asteriskjava.manager.event.ManagerEvent;
 import org.asteriskjava.manager.event.NewChannelEvent;
 import org.asteriskjava.manager.response.ManagerResponse;
 import org.asteriskjava.util.SocketConnectionFacade;
+import org.junit.Before;
+import org.junit.Test;
 
-public class ManagerConnectionImplTest extends TestCase
+public class ManagerConnectionImplTest
 {
     protected SocketConnectionFacade mockSocket;
     protected ManagerWriterMock mockWriter;
     protected ManagerReaderMock mockReader;
     protected MockedManagerConnectionImpl mc;
 
-    @Override
-   protected void setUp() throws Exception
+    @Before
+    public void setUp()
     {
         mockWriter = new ManagerWriterMock();
         mockWriter.setExpectedUsername("username");
@@ -63,12 +67,14 @@ public class ManagerConnectionImplTest extends TestCase
         mockWriter.setDispatcher(mc);
     }
 
+    @Test
     public void testDefaultConstructor()
     {
         assertEquals("Invalid default hostname", "localhost", mc.getHostname());
         assertEquals("Invalid default port", 5038, mc.getPort());
     }
 
+    @Test
     public void testRegisterUserEventClass()
     {
         ManagerReader managerReader;
@@ -88,6 +94,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(managerReader);
     }
 
+    @Test
     public void testLogin() throws Exception
     {
         MockedManagerEventListener listener;
@@ -103,7 +110,7 @@ public class ManagerConnectionImplTest extends TestCase
         mc.setPassword("password");
         mc.addEventListener(listener);
         mc.setDefaultResponseTimeout(5000);
-        
+
         startTime = System.currentTimeMillis();
         mc.login();
         endTime = System.currentTimeMillis();
@@ -127,7 +134,7 @@ public class ManagerConnectionImplTest extends TestCase
         catch (InterruptedException e)
         {
             // ugly hack to make this work when the thread is interrupted coz a
-            // response has been received but the ManagerConnection was not yet 
+            // response has been received but the ManagerConnection was not yet
             // sleeping
             Thread.sleep(100);
         }
@@ -137,18 +144,20 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
         assertEquals("must have handled exactly one events", 1, listener.eventsHandled.size());
-/*
-        assertTrue(
-                "first event handled must be a ProtocolIdentifierReceivedEvent",
-                listener.eventsHandled.get(0) instanceof ProtocolIdentifierReceivedEvent);
-*/
-        assertTrue("event handled must be a ConnectEvent",
-                listener.eventsHandled.get(0) instanceof ConnectEvent);
+        /*
+         * assertTrue(
+         * "first event handled must be a ProtocolIdentifierReceivedEvent",
+         * listener.eventsHandled.get(0) instanceof
+         * ProtocolIdentifierReceivedEvent);
+         */
+        assertTrue("event handled must be a ConnectEvent", listener.eventsHandled.get(0) instanceof ConnectEvent);
 
         verify(mockSocket);
-        assertTrue("login() took longer than 2 second, probably a notify error (duration was " + duration + " is msec)", duration <= 2000);
+        assertTrue("login() took longer than 2 second, probably a notify error (duration was " + duration + " is msec)",
+                duration <= 2000);
     }
 
+    @Test
     public void testLoginIncorrectKey() throws Exception
     {
         mockSocket.close();
@@ -188,7 +197,7 @@ public class ManagerConnectionImplTest extends TestCase
         catch (InterruptedException e)
         {
             // ugly hack to make this work when the thread is interrupted coz a
-            // response has been received but the ManagerConnection was not yet 
+            // response has been received but the ManagerConnection was not yet
             // sleeping
             Thread.sleep(100);
         }
@@ -198,6 +207,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testLoginIOExceptionOnConnect() throws Exception
     {
         replay(mockSocket);
@@ -227,6 +237,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testLoginTimeoutOnConnect() throws Exception
     {
         mc.setDefaultResponseTimeout(50);
@@ -266,6 +277,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testLoginTimeoutOnChallengeAction() throws Exception
     {
         mc.setDefaultResponseTimeout(200);
@@ -307,6 +319,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testLogoffWhenConnected() throws Exception
     {
         mockSocket.close();
@@ -318,12 +331,12 @@ public class ManagerConnectionImplTest extends TestCase
 
         mc.logoff();
 
-        assertEquals("logoff action not sent 1 time", 1,
-                mockWriter.logoffActionsSent);
+        assertEquals("logoff action not sent 1 time", 1, mockWriter.logoffActionsSent);
         verify(mockSocket);
     }
 
-    public void testLogoffWhenNotConnected() throws Exception
+    @Test
+    public void testLogoffWhenNotConnected()
     {
         replay(mockSocket);
 
@@ -341,6 +354,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testSendActionWithNullAction() throws Exception
     {
         // fake connect
@@ -355,6 +369,7 @@ public class ManagerConnectionImplTest extends TestCase
         }
     }
 
+    @Test
     public void testSendActionWhenNotConnected() throws Exception
     {
         StatusAction statusAction;
@@ -371,6 +386,7 @@ public class ManagerConnectionImplTest extends TestCase
         }
     }
 
+    @Test
     public void testSendAction() throws Exception
     {
         StatusAction statusAction;
@@ -391,6 +407,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("other actions not sent 1 time", 1, mockWriter.otherActionsSent);
     }
 
+    @Test
     public void testSendActionTimeout() throws Exception
     {
         StatusAction statusAction;
@@ -417,6 +434,7 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("other actions not sent 1 time", 1, mockWriter.otherActionsSent);
     }
 
+    @Test
     public void testDispatchResponseUnexpectedResponse()
     {
         ManagerResponse response;
@@ -430,6 +448,7 @@ public class ManagerConnectionImplTest extends TestCase
         mc.dispatchResponse(response);
     }
 
+    @Test
     public void testDispatchResponseMissingInternalActionId()
     {
         ManagerResponse response;
@@ -442,6 +461,7 @@ public class ManagerConnectionImplTest extends TestCase
         mc.dispatchResponse(response);
     }
 
+    @Test
     public void testDispatchResponseNullActionId()
     {
         ManagerResponse response;
@@ -454,12 +474,14 @@ public class ManagerConnectionImplTest extends TestCase
         mc.dispatchResponse(response);
     }
 
+    @Test
     public void testDispatchResponseNullResponse()
     {
         // expected result is ignoring and logging
         mc.dispatchResponse(null);
     }
 
+    @Test
     public void testReconnect() throws Exception
     {
         DisconnectEvent disconnectEvent;
@@ -474,7 +496,7 @@ public class ManagerConnectionImplTest extends TestCase
         mc.setPassword("password");
 
         mc.dispatchEvent(disconnectEvent);
-        
+
         // wait for reconnect thread to do its work
         Thread.sleep(1000);
 
@@ -491,6 +513,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(mockSocket);
     }
 
+    @Test
     public void testReconnectWithIOException() throws Exception
     {
         DisconnectEvent disconnectEvent;
@@ -510,7 +533,6 @@ public class ManagerConnectionImplTest extends TestCase
 
         // wait for reconnect thread to do its work
         Thread.sleep(1000);
-
         assertEquals("createSocket not called 1 time", 2, mc.createSocketCalls);
         assertEquals("createWriter not called 1 time", 1, mc.createWriterCalls);
         assertEquals("createReader not called 1 time", 1, mc.createReaderCalls);
@@ -522,9 +544,10 @@ public class ManagerConnectionImplTest extends TestCase
         assertEquals("state is not CONNECTED", ManagerConnectionState.CONNECTED, mc.getState());
 
         verify(mockSocket);
+
     }
 
-
+    @Test
     public void testReconnectWithTimeoutException() throws Exception
     {
         DisconnectEvent disconnectEvent;
@@ -560,6 +583,7 @@ public class ManagerConnectionImplTest extends TestCase
     }
 
     @SuppressWarnings("unchecked")
+    @Test
     public void testDispatchEventWithMultipleEventHandlers()
     {
         final int count = 20;
@@ -587,6 +611,7 @@ public class ManagerConnectionImplTest extends TestCase
         verify(list);
     }
 
+    @Test
     public void testIsShowVersionCommandAction()
     {
         assertTrue(mc.isShowVersionCommandAction(new CommandAction("show version")));
@@ -611,9 +636,7 @@ public class ManagerConnectionImplTest extends TestCase
         }
     }
 
-    private class MockedManagerConnectionImpl
-            extends
-                ManagerConnectionImpl
+    private class MockedManagerConnectionImpl extends ManagerConnectionImpl
     {
         ManagerReader mockReader;
         ManagerWriter mockWriter;
@@ -625,11 +648,11 @@ public class ManagerConnectionImplTest extends TestCase
         public int createReaderCalls = 0;
         public int createWriterCalls = 0;
         public int createSocketCalls = 0;
-        
+
         public int loginCalls = 0;
 
-        public MockedManagerConnectionImpl(ManagerReader mockReader,
-                ManagerWriter mockWriter, SocketConnectionFacade mockSocket)
+        public MockedManagerConnectionImpl(ManagerReader mockReader, ManagerWriter mockWriter,
+                SocketConnectionFacade mockSocket)
         {
             super();
             this.mockReader = mockReader;
@@ -689,10 +712,10 @@ public class ManagerConnectionImplTest extends TestCase
             }
             return mockSocket;
         }
-        
+
         @Override
-        protected void doLogin(long timeout, String events) throws IOException,
-            AuthenticationFailedException, TimeoutException
+        protected synchronized void doLogin(long timeout, String events)
+                throws IOException, AuthenticationFailedException, TimeoutException
         {
             loginCalls++;
 
@@ -703,9 +726,9 @@ public class ManagerConnectionImplTest extends TestCase
             }
             super.doLogin(timeout, events);
         }
-        
+
         @Override
-      protected AsteriskVersion determineVersion()
+        protected AsteriskVersion determineVersion()
         {
             return null;
         }

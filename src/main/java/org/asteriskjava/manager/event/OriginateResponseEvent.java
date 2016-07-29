@@ -31,12 +31,10 @@ public class OriginateResponseEvent extends ResponseEvent
     private static final long serialVersionUID = 910724860608259687L;
     private String response;
     private String channel;
-    private String context;
-    private String exten;
     private String uniqueId;
     private Integer reason;
-    private String callerIdNum;
-    private String callerIdName;
+    private String data;
+    private String application;
 
     /**
      * @param source
@@ -87,38 +85,6 @@ public class OriginateResponseEvent extends ResponseEvent
         this.channel = channel;
     }
 
-    /**
-     * Returns the name of the context of the extension to connect to.
-     */
-    public String getContext()
-    {
-        return context;
-    }
-
-    /**
-     * Sets the name of the context of the extension to connect to.
-     */
-    public void setContext(String context)
-    {
-        this.context = context;
-    }
-
-    /**
-     * Returns the the extension to connect to.
-     */
-    public String getExten()
-    {
-        return exten;
-    }
-
-    /**
-     * Sets the the extension to connect to.
-     */
-    public void setExten(String exten)
-    {
-        this.exten = exten;
-    }
-
     public Integer getReason()
     {
         return reason;
@@ -145,47 +111,32 @@ public class OriginateResponseEvent extends ResponseEvent
         this.uniqueId = uniqueId;
     }
 
-    /**
-     * Returns the Caller*ID Number of the originated channel.
-     * <p>
-     * Available sind Asterisk 1.4.
-     * 
-     * @return the Caller*ID Number of the originated channel or <code>null</code> if none was set.
-     * @since 0.3
-     */
-    public String getCallerIdNum()
-    {
-        return callerIdNum;
-    }
-
-    public void setCallerIdNum(String callerId)
-    {
-        this.callerIdNum = callerId;
-    }
-
     // for backward compatibility only
     public void setCallerId(String callerId)
     {
-        if (this.callerIdNum == null)
+        if (getCallerIdNum() == null)
         {
-            this.callerIdNum = callerId;
+            setCallerIdNum(callerId);
         }
     }
 
-    /**
-     * Returns the Caller*ID Name of the originated channel.
-     * <p>
-     * Available sind Asterisk 1.4.
-     * 
-     * @return the Caller*ID Name of the originated channel or <code>null</code> if none was set.
-     */
-    public String getCallerIdName()
+    public String getData()
     {
-        return callerIdName;
+        return data;
     }
 
-    public void setCallerIdName(String callerIdName)
+    public void setData(String data)
     {
-        this.callerIdName = callerIdName;
+        this.data = data;
+    }
+
+    public String getApplication()
+    {
+        return application;
+    }
+
+    public void setApplication(String application)
+    {
+        this.application = application;
     }
 }

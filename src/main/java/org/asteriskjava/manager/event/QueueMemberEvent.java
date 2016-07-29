@@ -58,6 +58,11 @@ public class QueueMemberEvent extends ResponseEvent
     private Long lastCall;
     private Integer status;
     private Boolean paused;
+    private String stateinterface;
+    private Integer incall;
+    private String pausedreason;
+
+
 
     /**
      * @param source
@@ -329,4 +334,43 @@ public class QueueMemberEvent extends ResponseEvent
     {
         this.name = memberName;
     }
+
+    /**
+     * @return Name of the interface where device state is taken from.
+     */
+    public String getStateinterface()
+    {
+        return stateinterface;
+    }
+
+    public void setStateinterface(String stateinterface)
+    {
+        this.stateinterface = stateinterface;
+    }
+
+    /**
+     * @return 1 if is incall 0 if not
+     */
+    public Integer getIncall() 
+    {
+        return incall;
+    }
+
+    public void setIncall(Integer incall) 
+    {
+        this.incall = incall;
+    }
+
+
+    public String getPausedreason() 
+    {
+        return pausedreason;
+    }
+
+    public void setPausedreason(String pausedreason) 
+    {
+        this.pausedreason = pausedreason;
+    }
+
+
 }
